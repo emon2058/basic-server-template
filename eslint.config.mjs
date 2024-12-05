@@ -22,6 +22,8 @@ export default [
       'no-console': 'warn',
       'no-undef': 'error',
     },
-    globals: 'readonly',
+    globals: {
+      process: 'readonly',
+    },
   },
 ];
