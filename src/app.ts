@@ -1,16 +1,25 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
+import { StudentRouter } from './app/modules/students/students.route';
+import { UserRouter } from './app/modules/user/user.route';
+import globalErrorHandler from './app/middleware/globalErrorhandler';
+import notFound from './app/middleware/notFound';
 const app: Application = express();
 
 // parser
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
-  const a = 33;
+app.use('/api/v1/students', StudentRouter);
+app.use('/api/v1/users', UserRouter);
 
-  res.send(`Hello ${a}`);
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello Students');
+  console.log('welcome mair');
 });
 
-console.log(process.cwd());
+app.use(globalErrorHandler);
+
+app.use(notFound);
+
 export default app;
