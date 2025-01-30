@@ -16,22 +16,29 @@ const guardianValidationSchema = z.object({
 });
 
 // Students schema
-const studentsValidationSchema = z.object({
-  id: z.string().min(1, { message: 'ID is required' }),
-  user: z.string().uuid({ message: 'Invalid user id format' }),
-  name: z.string().min(1).max(20),
-  email: z.string().email({ message: 'Invalid email format' }),
-  gender: z.enum(['male', 'female', 'others'], {
-    message: 'Gender must be male, female, or others',
+const createStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().min(4, { message: 'Password is required' }),
+    student: z.object({
+      // user: z.string().uuid({ message: 'Invalid user id format' }),
+      name: z.string().min(1).max(20),
+      email: z.string().email({ message: 'Invalid email format' }),
+      gender: z.enum(['male', 'female', 'others'], {
+        message: 'Gender must be male, female, or others',
+      }),
+      blood: z
+        .enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'], {
+          message: 'Invalid blood type',
+        })
+        .optional(),
+      // age: z.number().min(5, { message: 'below 5 years not admitted' }),
+      guardian: guardianValidationSchema, // Include the Guardian schema for validation
+      academicSemester: z.string(),
+      academicDepartment: z.string(),
+    }),
   }),
-  blood: z
-    .enum(['A+', 'A-', 'AB+', 'AB-', 'B+', 'B-', 'O+', 'O-'], {
-      message: 'Invalid blood type',
-    })
-    .optional(),
-  // age: z.number().min(5, { message: 'below 5 years not admitted' }),
-  guardian: guardianValidationSchema, // Include the Guardian schema for validation
-  isDeleted: z.boolean(),
 });
 
-export default studentsValidationSchema;
+export const studentsValidation = {
+  createStudentValidationSchema,
+};

@@ -1,14 +1,27 @@
-import { Student } from '../students.model';
-import { TStudent } from './students.interface';
+import { Student } from './students.model';
 
 const getAllStudentsFromDB = async () => {
-  const resutl = await Student.find();
+  const resutl = await Student.find()
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
   return resutl;
 };
 
 const getAStudentFromDB = async (id: string) => {
-  // const result = await Student.findOne({ id });
-  const result = await Student.aggregate([{ $match: { id: id } }]);
+  const result = await Student.findOne({ id })
+    .populate('admissionSemester')
+    .populate({
+      path: 'academicDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
+  // const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
 

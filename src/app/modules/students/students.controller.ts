@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './students.service';
 import Joi from 'Joi';
 // import studentValidationSchema from './students.Joivalidation';
-import studentValidationSchema from './students.validation';
+import catchAsync from '../../utlis/catchAsync';
 
 // const createStudent = async (req: Request, res: Response) => {
 //   try {
@@ -21,12 +21,8 @@ import studentValidationSchema from './students.validation';
 //   }
 // };
 
-const deleteStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
+const deleteStudent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { std_id } = req.params;
 
     const result = await StudentServices.deleteStudentFromDB(std_id);
@@ -36,26 +32,21 @@ const deleteStudent = async (
       message: 'Student deleted successfully',
       data: result,
     });
-  } catch (err: any) {
-    next(err);
-  }
-};
-
-const getStudents = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  },
+);
+const getStudents = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const result = await StudentServices.getAllStudentsFromDB();
     res.status(200).json({
       success: true,
       message: 'Students retrieve successfully',
       data: result,
     });
-  } catch (err: any) {
-    next(err);
-  }
-};
+  },
+);
 
-const getAStudent = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const getAStudent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { std_id } = req.params;
     const result = await StudentServices.getAStudentFromDB(std_id);
     res.status(200).json({
@@ -63,10 +54,8 @@ const getAStudent = async (req: Request, res: Response, next: NextFunction) => {
       message: 'get Student',
       data: result,
     });
-  } catch (err: any) {
-    next(err);
-  }
-};
+  },
+);
 export const StudentControllers = {
   getStudents,
   getAStudent,

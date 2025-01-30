@@ -4,7 +4,7 @@ import {
   StudentModel,
   TGuardian,
   TStudent,
-} from './students/students.interface';
+} from './students.interface';
 
 const guardianSchema = new Schema<TGuardian>({
   name: { type: String },
@@ -55,9 +55,17 @@ const studentsSchema = new Schema<TStudent, StudentModel>({
     type: guardianSchema,
     required: true,
   },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester',
+  },
   isDeleted: {
     type: Boolean,
     default: false,
+  },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicDepartment',
   },
 });
 

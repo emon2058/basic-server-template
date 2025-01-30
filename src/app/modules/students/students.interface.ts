@@ -14,7 +14,9 @@ export type TStudent = {
   blood?: 'A+' | 'A-' | 'AB+' | 'AB-' | 'B+' | 'B-' | 'O+' | 'O-';
   // age: number;
   guardian: TGuardian;
+  admissionSemester: Types.ObjectId;
   isDeleted: boolean;
+  academicDepartment: Types.ObjectId;
 };
 
 // for creating static
